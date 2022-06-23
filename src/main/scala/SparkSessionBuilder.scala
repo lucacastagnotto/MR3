@@ -9,7 +9,6 @@ object SparkSessionBuilder {
     val spark_session = SparkSession.builder()
       .config(spark_conf)
       .getOrCreate()
-
     spark_session
   }
 }

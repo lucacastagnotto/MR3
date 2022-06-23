@@ -4,7 +4,7 @@ object InputHandling {
   def readInput(spark_session: SparkSession): DataFrame = {
     // load dataset ratings
     //val ratings_path = "gs://scc_bucket_1/ratings.csv" // cloud
-    val ratings_path = "dataset/ratings.csv" // local
+    val ratings_path = "datasets/25M/ratings.csv" // local
     //val ratings_path = "big_dataset/rating.csv" // local AND big
     var ds_ratings = spark_session.read.format("csv")
       .option("delimiter", ",")
@@ -12,7 +12,7 @@ object InputHandling {
       .load(ratings_path)
     // load dataset movies
     //val movies_path = "gs://scc_bucket_1/movies.csv" // cloud
-    val movies_path = "dataset/movies.csv" // local
+    val movies_path = "datasets/25M/movies.csv" // local
     //val movies_path = "big_dataset/movie.csv" // local AND big
     var ds_movies = spark_session.read.format("csv")
       .option("delimiter", ",")

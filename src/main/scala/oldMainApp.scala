@@ -1,7 +1,7 @@
 import java.io.{BufferedWriter, File, FileWriter}
 import scala.collection.mutable.ListBuffer
 
-object mainApp {
+object oldMainApp {
   def sort[A : Ordering](coll: Seq[Iterable[A]]): Seq[Iterable[A]] = coll.sorted
 
   def candidates_generation(last_frequent_itemsets: List[List[Int]], k : Int) : Set[Set[Int]] = {
@@ -49,18 +49,14 @@ object mainApp {
     val t1 = System.nanoTime // execution duration
     // SparkSession
     val spark_session = SparkSessionBuilder.create_SparkSession()
-    val sc = spark_session.sparkContext
     // Input Reading
     val t0 = System.nanoTime // opening csv files duration
     val ratings_path = args(0)
     val movies_path = args(1)
-    val output_path = args(2)
-    //val ds_full = InputHandling.readInput(spark_session)
-    val ds_full = newInputHandling.readInput(spark_session, ratings_path, movies_path)
+    val ds_full = InputHandling.readInput(spark_session)
     val reading_duration = (System.nanoTime - t0) / 1e9d
     // Initial variables
-    //val transactions = ds_full.rdd.map(row => (row(1), row(0))).groupByKey().map(t => t._2.map(_.toString.toInt))//.repartition(5)
-    val transactions = ds_full.aggregateByKey(List[String]())((acc, x) => x :: acc, (acc1, acc2) => acc1 ::: acc2).map(t => t._2.map(_.toInt))
+    val transactions = ds_full.rdd.map(row => (row(1), row(0))).groupByKey().map(t => t._2.map(_.toString.toInt))
     val totalTransactions = transactions.count().toInt
     val min_support_coef = 0.25
     val min_support = min_support_coef * totalTransactions
@@ -86,7 +82,7 @@ object mainApp {
     }
     val duration = (System.nanoTime - t1) / 1e9d
     // Make some prints
-
+    /*
     println("min_support_coef: " + min_support_coef.toString + "\n")
     println("min_support: " + min_support.toString + "\n")
     println("durata: " + duration.toString + " secondi\n")
@@ -95,12 +91,9 @@ object mainApp {
     for(itemset <- frequent_itemsets) {
       println(itemset.toString() + "\n")
     }
-
-    sc.parallelize(frequent_itemsets).coalesce(1).saveAsTextFile(output_path)
-
+    */
     // Save file with frequent itemsets
     // val file = new File("gs://scc_bucket_1") // cloud
-    /*
     val currentDirectory = new java.io.File(".").getCanonicalPath
     println("currentDirectory: " + currentDirectory)
     val file = new File("outputFile") // local
@@ -115,8 +108,6 @@ object mainApp {
       bw.write(itemset.toString() + "\n")
     }
     bw.close()
-
-    */
 
   }
 }
