@@ -2,7 +2,7 @@
 
 ## Istruzioni per eseguire il codice su Google Cloud Platform
 
-1. Configura un nuovo progetto [Google Cloud](https://cloud.google.com/dataproc/docs/guides/setup-project]
+1. Configura un nuovo progetto [Google Cloud](https://cloud.google.com/dataproc/docs/guides/setup-project)
 2. Crea un bucket [Cloud Storage](https://cloud.google.com/storage/docs/creating-buckets) e caricaci:
   - il file JAR del codice
   - i dataset
